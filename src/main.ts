@@ -13,6 +13,6 @@ async function bootstrap() {
       .tz('America/Sao_Paulo')
       .format('YYYY-MM-DD HH:mm:ss.SSS');
   };
-  await app.listen(process.env.PORT ?? 8080);
+  await app.listen(process.env.PORT ?? 3000);
 }
 void bootstrap();
