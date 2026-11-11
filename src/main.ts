@@ -5,6 +5,7 @@ import moment from 'moment-timezone';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('api/v1');
   app.useGlobalFilters(new AllExceptionsFilter());
 
   Date.prototype.toJSON = function (): any {
