@@ -7,6 +7,8 @@ import {
     UsePipes,
     ValidationPipe,
     Query,
+    Put,
+    Param,
 } from '@nestjs/common';
 import {
     ClientProxy,
@@ -14,6 +16,7 @@ import {
     Transport,
 } from '@nestjs/microservices';
 import { CreateCategoryDto } from './dtos/createCategory.dto';
+import { UpdateCategoryDto } from './dtos/updateCategory.dto';
 import { Observable } from 'rxjs';
 
 @Controller()
@@ -56,5 +59,16 @@ export class AppController {
             'consultar-categorias',
             _id ? _id : '',
         );
+    }
+    @Put('categorias/:_id')
+    @UsePipes(ValidationPipe)
+    async updateCategory(
+        @Param('_id') _id: string,
+        @Body() updateCategoryDto: UpdateCategoryDto,
+    ) {
+        this.clientAdminBackend.emit('atualizar-categoria', {
+            id: _id,
+            updateCategory: updateCategoryDto,
+        });
     }
 }
