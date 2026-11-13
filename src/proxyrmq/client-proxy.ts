@@ -12,6 +12,7 @@ export class ClientProxyGameRanking {
     private host = process.env.RABBITMQ_HOST;
     private vhost = process.env.RABBITMQ_VIRTUAL_HOST;
     private rmqProtocol = process.env.RABBITMQ_PROTOCOL;
+    private rmqQueue = process.env.RABBITMQ_QUEUE;
 
     private url = `${this.rmqProtocol}${this.user}:${this.password}@${this.host}${this.vhost}`;
 
@@ -20,7 +21,7 @@ export class ClientProxyGameRanking {
             transport: Transport.RMQ,
             options: {
                 urls: [this.url],
-                queue: 'admin-backend',
+                queue: this.rmqQueue,
             },
         });
     }
