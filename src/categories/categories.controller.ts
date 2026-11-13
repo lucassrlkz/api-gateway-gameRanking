@@ -2,43 +2,28 @@ import {
     Body,
     Controller,
     Get,
-    Post,
     Logger,
+    Param,
+    Post,
+    Put,
+    Query,
     UsePipes,
     ValidationPipe,
-    Query,
-    Put,
-    Param,
 } from '@nestjs/common';
-import {
-    ClientProxy,
-    ClientProxyFactory,
-    Transport,
-} from '@nestjs/microservices';
+
 import { CreateCategoryDto } from './dtos/createCategory.dto';
 import { UpdateCategoryDto } from './dtos/updateCategory.dto';
 import { Observable } from 'rxjs';
+import { ClientProxyGameRanking } from '../proxyrmq/client-proxy';
 
-@Controller()
-export class AppController {
-    private logger = new Logger(AppController.name);
-    private clientAdminBackend: ClientProxy;
+@Controller('categorias')
+export class CategoriesController {
+    private logger = new Logger(CategoriesController.name);
+    private clientAdminBackend;
 
-    constructor() {
-        const user = process.env.RABBITMQ_USER;
-        const password = process.env.RABBITMQ_PASSWORD;
-        const host = process.env.RABBITMQ_HOST;
-        const vhost = process.env.RABBITMQ_VIRTUAL_HOST;
-        const rmqProtocol = process.env.RABBITMQ_PROTOCOL;
-
-        const url = `${rmqProtocol}${user}:${password}@${host}${vhost}`;
-        this.clientAdminBackend = ClientProxyFactory.create({
-            transport: Transport.RMQ,
-            options: {
-                urls: [url],
-                queue: 'admin-backend',
-            },
-        });
+    constructor(private clientProxyGameRanking: ClientProxyGameRanking) {
+        this.clientAdminBackend =
+            this.clientProxyGameRanking.getClientProxyAdminBackendInstance();
     }
 
     @Get('')
