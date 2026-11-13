@@ -39,7 +39,7 @@ export class CategoriesController {
     }
 
     @Get('categorias')
-    findCategory(@Query('idCategory') _id: string): Observable<any> {
+    findCategory(@Query('idCatedoria') _id: string): Observable<any> {
         return this.clientAdminBackend.send(
             'consultar-categorias',
             _id ? _id : '',
